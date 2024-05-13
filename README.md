@@ -25,13 +25,6 @@ $ scoop bucket add hyperdrive https://github.com/DEEP-IMPACT-AG/scoop-hyperdrive
 $ scoop install skuld
 ```
 
-On Linux, you can use [snapcraft](https://snapcraft.io) to install `skuld`. `skuld` needs classic containment to access the folder `~/.aws`
-where the credential files are stored.
-
-```
-$ sudo snap install skuld --classic --edge
-```
-
 ### Option 2: Easy, with Docker
 
 For all platforms (Linux, macOS, Windows, Raspberry Pi, Nvidia Jetson, etc) that have **docker** installed, this is the zero installation method. Just run once to add the alias in your `${HOME}/.profile` or `${HOME}/.bashrc` file:
