@@ -30,7 +30,7 @@ $ scoop install skuld
 For all platforms (Linux, macOS, Windows, Raspberry Pi, Nvidia Jetson, etc) that have **docker** installed, this is the zero installation method. Just run once to add the alias in your `${HOME}/.profile` or `${HOME}/.bashrc` file:
 
 ```sh
-echo "alias skuld='docker run -it --rm -v ${HOME}/.aws:/root/.aws deepimpact/skuld:latest skuld'" >> ${HOME}/.profile
+echo "alias skuld='docker run -it --rm -v ${HOME}/.aws:/root/.aws avaxgenesis/skuld:latest skuld'" >> ${HOME}/.profile
 ```
 
 That's it!  You can call `skuld` from the command line, like it was installed natively on your system.
@@ -147,6 +147,6 @@ AWS has a tutorial to that purpose: [Enable Your Users to Configure Their Own Cr
 
 To cross compile and upload the latest version of skuld to [Docker Hub](https://hub.docker.com), do:
 
-1. Log in to the docker hub with the **deepimpact** account, if you did not so already.
+1. Log in to the docker hub with the **avaxgenesis** account, if you did not so already.
 2. Update the **git tag** version in the file `buildx.sh`
 3. Run `buildx.sh`

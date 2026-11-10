@@ -4,15 +4,15 @@
 # docker buildx cross compilers. To build the latest skuld release, do:
 #
 # 1. Update the VERSION variable, to build the tagged version from git.
-# 2. Run: docker login deepimpact
+# 2. Run: docker login -u avaxgenesis
 # 3. Make sure your ssh-agent has a key that can read the repo (ssh-add -l).
 # 4. Run: ./buildx.sh
 #
 # That's it!
 
-USER=deepimpact
+USER=avaxgenesis
 REPO=skuld
-VERSION=v0.7.9
+VERSION=v0.7.10
 IMAGE=${REPO}
 BUILDER_CONTAINER_NAME=${REPO}-docker-builder
 PLATFORM="linux/amd64,linux/arm64"
