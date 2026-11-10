@@ -11,7 +11,7 @@ set -xe
 
 OS=$(uname -s)
 ARCH=$(uname -m)
-VERSION=v0.7.5
+VERSION=v0.7.6
 
 # Clone and compile with release flags.
 cd /workdir

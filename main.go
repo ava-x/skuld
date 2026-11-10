@@ -16,6 +16,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 var (
@@ -27,7 +28,7 @@ const admDuration = 3600
 const standardDuration = 36000
 
 func main() {
-	profile, region := parseArguments()
+	profile, region, durationOverride := parseArguments()
 	vPrintln("Loading the AWS profile %s", profile)
 	cfg, err := config.LoadDefaultConfig(
 		context.TODO(),
@@ -49,15 +50,16 @@ func main() {
 	arnChan := mfaDeviceArnChan(stsc, iamc)
 	tokenCode := tokenCode()
 	mfaDeviceArn := pullMfaDeviceArn(arnChan)
-	credentials := sessionCredentials(stsc, mfaDeviceArn, tokenCode, duration(profile))
+	credentials := sessionCredentials(stsc, mfaDeviceArn, tokenCode, duration(profile, durationOverride))
 	storeCredentials(profile, region, credentials)
 	storeConfig(profile, region)
 	fmt.Printf("Credentials valid until: %s\n", credentials.Expiration)
 }
 
-func parseArguments() (string, string) {
+func parseArguments() (string, string, time.Duration) {
 	flag.Usage = printUsage
 	region := flag.String("r", "", "Override the AWS Region")
+	dur := flag.Duration("d", 0, "Override the session duration, e.g. 8h or 90m (default 10h, 1h for -adm profiles)")
 	version := flag.Bool("V", false, "Print the skuld version")
 	verbose = flag.Bool("v", false, "Print verbose log")
 	help := flag.Bool("h", false, "Print this help message")
@@ -75,11 +77,15 @@ func parseArguments() (string, string) {
 		printUsage()
 		os.Exit(2)
 	}
-	return tail[0], *region
+	if *dur < 0 {
+		println("The duration must be positive.")
+		os.Exit(2)
+	}
+	return tail[0], *region, *dur
 }
 
 func printUsage() {
-	println("skuld [-r region] <aws profile>")
+	println("skuld [-r region] [-d duration] <aws profile>")
 	printVersion()
 	flag.PrintDefaults()
 }
@@ -142,7 +148,10 @@ func pullMfaDeviceArn(arn chan arn) string {
 	return mfaDeviceArn.arn
 }
 
-func duration(profile string) int32 {
+func duration(profile string, override time.Duration) int32 {
+	if override > 0 {
+		return int32(override.Seconds())
+	}
 	if strings.HasSuffix(profile, "-adm") {
 		return admDuration
 	}

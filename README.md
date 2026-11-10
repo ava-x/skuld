@@ -127,6 +127,10 @@ The region of the skuld profile is given by the profile from which it is derived
 
 The flag `-r <region>` can be used to override the region.
 
+## Session duration
+
+By default the credentials are valid for 10 hours (1 hour for profiles ending in `-adm`). The flag `-d <duration>` overrides this, using Go duration syntax, e.g. `skuld -d 8h my-profile` or `skuld -d 90m my-profile`. AWS limits `GetSessionToken` to between 15 minutes and 36 hours.
+
 ## Enforcing MFA Devices
 
 `skuld` by itself does not enforce the use of MFA devices; it just simplifies the creation of temporary credentials with MFA devices.
