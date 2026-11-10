@@ -5,13 +5,14 @@
 #
 # 1. Update the VERSION variable, to build the tagged version from git.
 # 2. Run: docker login deepimpact
-# 3. Run: ./buildx.sh
+# 3. Make sure your ssh-agent has a key that can read the repo (ssh-add -l).
+# 4. Run: ./buildx.sh
 #
 # That's it!
 
 USER=deepimpact
 REPO=skuld
-VERSION=v0.7.7
+VERSION=v0.7.8
 IMAGE=${REPO}
 BUILDER_CONTAINER_NAME=${REPO}-docker-builder
 PLATFORM="linux/amd64,linux/arm64"
@@ -32,6 +33,7 @@ fi
 docker buildx build --platform=${PLATFORM} \
 	--tag ${USER}/${IMAGE}:${VERSION} \
 	--tag ${USER}/${IMAGE}:latest \
+	--ssh default \
 	-f Dockerfile \
 	--push \
 	.
