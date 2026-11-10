@@ -27,6 +27,10 @@ var (
 const admDuration = 3600
 const standardDuration = 36000
 
+// Limits that AWS enforces on sts:GetSessionToken.
+const minSessionDuration = 15 * time.Minute
+const maxSessionDuration = 36 * time.Hour
+
 func main() {
 	profile, region, durationOverride := parseArguments()
 	vPrintln("Loading the AWS profile %s", profile)
@@ -59,7 +63,7 @@ func main() {
 func parseArguments() (string, string, time.Duration) {
 	flag.Usage = printUsage
 	region := flag.String("r", "", "Override the AWS Region")
-	dur := flag.Duration("d", 0, "Override the session duration, e.g. 8h or 90m (default 10h, 1h for -adm profiles)")
+	dur := flag.Duration("d", 0, "Override the session duration, e.g. 8h or 90m (15m to 36h; default 10h, 1h for -adm profiles)")
 	version := flag.Bool("V", false, "Print the skuld version")
 	verbose = flag.Bool("v", false, "Print verbose log")
 	help := flag.Bool("h", false, "Print this help message")
@@ -77,8 +81,8 @@ func parseArguments() (string, string, time.Duration) {
 		printUsage()
 		os.Exit(2)
 	}
-	if *dur < 0 {
-		println("The duration must be positive.")
+	if *dur != 0 && (*dur < minSessionDuration || *dur > maxSessionDuration) {
+		fmt.Printf("The duration must be between %s and %s, got %s.\n", minSessionDuration, maxSessionDuration, *dur)
 		os.Exit(2)
 	}
 	return tail[0], *region, *dur

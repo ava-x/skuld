@@ -12,7 +12,7 @@
 
 USER=avaxgenesis
 REPO=skuld
-VERSION=v0.7.10
+VERSION=v0.7.11
 IMAGE=${REPO}
 BUILDER_CONTAINER_NAME=${REPO}-docker-builder
 PLATFORM="linux/amd64,linux/arm64"
