@@ -11,7 +11,7 @@
 
 USER=deepimpact
 REPO=skuld
-VERSION=v0.7.6
+VERSION=v0.7.7
 IMAGE=${REPO}
 BUILDER_CONTAINER_NAME=${REPO}-docker-builder
 PLATFORM="linux/amd64,linux/arm64"

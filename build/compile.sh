@@ -11,11 +11,11 @@ set -xe
 
 OS=$(uname -s)
 ARCH=$(uname -m)
-VERSION=v0.7.6
+VERSION=v0.7.7
 
 # Clone and compile with release flags.
 cd /workdir
-git clone --depth 1 --branch ${VERSION} https://github.com/DEEP-IMPACT-AG/skuld.git /workdir/skuld_src
+git clone --depth 1 --branch ${VERSION} org-108055009@github.com:ava-x/skuld.git /workdir/skuld_src
 cd /workdir/skuld_src
 go build -ldflags "-s -w"
 
